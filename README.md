@@ -1,5 +1,6 @@
 # Hacker-Sim
 The final project for SFWRENG 3A04 Software Design III - Large System Design.
+A project of 2D game built on Unity.
 
 **Team Members**
 - [Andrew Hum](https://github.com/andrewhum)

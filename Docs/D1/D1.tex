@@ -1,0 +1,654 @@
+% !TeX root = ./D1.tex
+\documentclass[]{article}
+
+% Imported Packages
+%------------------------------------------------------------------------------
+\usepackage{amssymb}
+\usepackage{amstext}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{enumerate}
+\usepackage{fancyhdr}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{extarrows}
+\usepackage{setspace}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=cyan,
+}
+\usepackage{float}
+\usepackage[shortlabels]{enumitem}
+\usepackage{lipsum}
+%------------------------------------------------------------------------------
+
+% Header and Footer
+%------------------------------------------------------------------------------
+\pagestyle{plain}
+\renewcommand\headrulewidth{0.4pt}
+\renewcommand\footrulewidth{0.4pt}                        
+%------------------------------------------------------------------------------
+
+% Title Details
+%------------------------------------------------------------------------------
+\title{
+    \textbf{Group 10 - Deliverable \#1}\\
+    \large SFWRENG 3A04: Software Design III - Large System Design
+}
+\author{
+    Andrew Hum 400138826\\
+    Arkin Modi 400142497\\
+    Hongzhao Tan 400136957\\
+    Christopher Vishnu 400129743\\
+    Shengchen Zhou 400050783\\
+}
+\date{March 2, 2020}
+%------------------------------------------------------------------------------
+
+% Document
+%------------------------------------------------------------------------------
+\begin{document}
+
+\pagenumbering{gobble}
+\maketitle	
+\newpage
+
+\pagenumbering{arabic}
+\section{Introduction}
+\label{sec:introduction}
+This is the Software Requirement Specification for Hacker Sim.
+
+\subsection{Purpose}
+\label{sub:purpose}
+The purpose of the document is to lay out a description and intention of the 
+software that is being developed for both the client and the developers. It 
+will convey the software and hardware requirements of the game, as well as the 
+design constraints of the software. Furthermore, this document is used to define 
+our product, its functionality and performance which will be used to verify the 
+product in the testing process. 
+
+\subsection{Scope}
+\label{sub:scope}
+The purpose of the proposed software, Hacker Sim, will be an enjoyable, 
+interactive game that will allow the user to grow their specimen and beat their 
+highscores. The focus of the application is to grow a Software Engineer in their 
+room. Both the Software Engineer and their room can be upgraded using the 
+in-game currency. The in-game currency will be acquired through the completion 
+of tasks. Online capabilities will give users the ability to share their rooms 
+and chat as well as give gifts to other users to help complete tasks. 
+
+
+\subsection{Definitions, Acronyms, and Abbreviations}
+\label{sub:definitions_acronyms_and_abbreviations}
+SE - Software Engineer
+
+\subsection{References}
+\label{sub:references}
+Dormehl, L. (2019, May 29). The Tamagotchi Effect: How Digital Pets Shaped The 
+Way We Use Technology. Retrieved from 
+\url{https://www.digitaltrends.com/cool-tech/how-tamagotchi-shaped-tech/}
+\\\\
+Technologies, U. (n.d.). Unity. Retrieved from \url{https://unity.com/}
+
+\subsection{Overview}
+\label{sub:overview}
+The document is organized in the following manner: Overall Description, Use 
+Case Diagram, Functional Requirements, Non-Functional Requirements. Overall 
+Description focuses on providing details about how the ideas link together to 
+enable specific functionality and showing functionality through comparison as 
+well as outline who the users are intended to be and the constraints. Use Case 
+Diagrams demonstrate how the stakeholder carries out business events. Functional 
+Requirements explains the functionality of the system. Finally, the 
+Non-Functional Requirements focuses on the required qualities of the software.
+
+
+\section{Overall Description}
+\label{sec:overall_description}
+
+\subsection{Product Perspective}
+\label{sub:product_perspective}
+The product is a system modeling application for desktop computers based on the 
+Unity platform using C\#. The product design itself is not a continuation of any 
+predecessor products, but in the past there were many implementations with a 
+similar concept; raising a digital being. The trend of virtual pet games started 
+from mid 1990s to early 2000s, popularized by the Tamagotchis. Our product will 
+differentiate itself by giving users an experience of raising a software 
+engineer from the very beginning. Our product is a self-contained system that 
+will not be interacting with other systems.
+\\\\
+The system’s main features:
+\begin{enumerate}[1)]
+    \item A server with functionalities:
+    \begin{itemize}
+        \item To provide users with online access via login/logout
+        \item To connect a database with the implementation of a game
+        \item To allow different users to share and interact with each other
+        \item To allow users to give feedback and report bugs
+    \end{itemize}
+    \item A database or a file management system on the user’s computer for 
+    storing:
+    \begin{itemize}
+        \item User account information set
+        \item User game progress
+        \item Product FAQs for convenient look-up
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Product Functions}
+\label{sub:product_functions}
+\subsubsection{Function Summary}
+The system’s functionality is centralized around the user raising their digital 
+specimen as a Software Engineer (referred to as SE below). The user will be 
+involved with the lifecycle of specimen and attempt to promote it with a set 
+of means and reach end-game goal. A currency system is designed for the in-game 
+shop and the user can earn currency from initiating interactions/events with 
+their SE. For example, working and completing coding projects. The in-game 
+shop contains three main categories of items: interactable items (exercise 
+equipment), furniture and room upgrades and food. The specimen has a list of 
+metrics, i.e. tiredness, happiness, age, health, etc. The user must follow 
+certain rules to keep metrics within a rational range, otherwise it will 
+hinder specimen growth or lead to game failure. The user will be able to view 
+their specimen’s information to check their progress and current health. 
+
+\subsubsection{List of Basic Functions}
+\begin{enumerate}
+    \item User creates a SE.
+    \item Users initiate events and interact with their SE.
+    \item Users purchase items from the in-game shop.
+    \item Users utilize items.
+    \item Users customize specimen’s room.
+    \item Users view specimen’s information.
+    \item Users reset their game stage and start a new one.
+\end{enumerate}
+
+\subsubsection{Function Domain}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{"Function Domain Figure".png}
+    \caption{Function Domain}
+\end{figure}
+
+\subsection{User Characteristics}
+\label{sub:user_characteristics}
+Intended users do not have to meet a strict set of requirements to use our 
+product. Users can be a PhD student or no education. They are not required to 
+have past experience of similar types of games either. In general, it is 
+considered that the user should:
+
+\begin{itemize}
+    \item Have a hardware to run our product on, i.e. desktop, laptop, etc.
+    \item Have basic knowledge of operations for computer with access to internet
+    \item Be able to read FAQs and understand how to use the product
+\end{itemize}
+
+\subsection{Constraints}
+\label{sub:constraints}
+Items that might limit the developer's options:
+
+\begin{itemize}
+    \item Regulatory policies: Unity has term of service that developers need 
+    to follow
+    \item Basic requirements expectation set by the project outline: Our 
+    product must satisfy these functionalities. Features that have a conflict 
+    with those won’t be our options.
+    \item Project deliverable deadlines and schedule: In the given limiting 
+    time, we may not be able to develop various complex functions that are not 
+    included in project outlines with complex implementations.
+    \item Developer team’s experience: Some people are using Unity platform for 
+    the first time and have finite experience with creating and designing games.
+\end{itemize}
+
+\subsection{Assumptions and Dependencies}
+\label{sub:assumptions_and_dependencies}
+\begin{itemize}
+    \item As mentioned above in section 2.3, all requirements are based on the 
+    criteria outlined for proper use of the product. If definitions change 
+    during development, requirements will change accordingly.
+    \item All requirements are written under the assumption that our product is 
+    able to run on users’ hardware - the user’s hardware supports the technology 
+    of our product.
+    \item It is assumed that the product is running in an environment with 
+    internet connection.
+\end{itemize}
+
+\subsection{Apportioning of Requirements}
+\label{sub:apportioning_of_requirements}
+Requirements that may be delayed until future versions of the system:
+
+\begin{itemize}
+    \item Customization of SE’s room feature might be delayed as it is not a 
+    core feature to support main functions of system and it is not a requirement 
+    set by project outline
+    \item Interaction between SEs of different users feature might be delayed 
+    if the team cannot find a proper way to achieve this function in the given 
+    time
+\end{itemize}
+
+\section{Use Case Diagram}
+\label{sec:use_case_diagram}
+In this section, we have three Use Case diagrams to illustrate the required 
+business events and their interactions with each other and the user.
+
+\subsubsection*{Use Case Diagram 1:}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{"Use Case Diagram 1".png}
+\end{figure}
+
+\begin{enumerate}
+    \item Create SE: The user creates his SE, by customizing the basic 
+    properties of the SE.
+    \item Purchase Items: User purchases in-game items for his SE with in-game 
+    currency.
+    \item Let the SE Play Games: The user can let his SE play games to gain 
+    happiness.
+    \item Increase Currency: The user increases his SE’s in-game currency by 
+    letting SE work on software projects which would also increase the SE’s 
+    level of tiredness.
+    \item Accessing Inventory and Using Items: The user accesses the SE’s 
+    inventory, adds items into inventory and uses the items inside.
+\end{enumerate}
+
+\subsubsection*{Use Case Diagram 2:}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{"Use Case Diagram 2".png}
+\end{figure}
+
+\begin{enumerate}
+    \item Using Exercise Equipment: The user lets the SE exercise with 
+    its exercise equipment. Letting the SE exercise would keep the SE fit, make 
+    the SE tired, and also prolong the SE’s lifespan if the exercise equipment 
+    have been used frequently.
+    \item Feed The SE: The user shall be able to feed the SE by ordering food 
+    in-game. Feeding the SE would decrease the SE’s hunger. 
+    \item Overfeed The SE: The user overfeeds the SE by ordering food in-game 
+    when the SE is not hungry. Overfeeding the SE could make the SE’s unhealthy.
+    \item Improve SE’s skill: The user upgrades the SE’s programming skills, 
+    by selecting the skill which the user wants to upgrade, confirming his 
+    selection and spending certain amount of SE’s in-game programming experience 
+    to complete upgrading. Upgrading programming skills could increase SE’s income.
+    \item Communicate With Other Users: The user shall be able to communicate 
+    through the system with other users. By communicating with other users, the 
+    user can send/receive messages to/from other users, share pictures of the 
+    SE’s room and the SE’s current programming skills to other users.
+\end{enumerate}
+
+\subsubsection*{Use Case Diagram 3:}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{"Use Case Diagram 3".png}
+\end{figure}
+
+Use-case diagram 3 (references Business Event 5) outlines the interactions 
+between the user and the systems reaction to a discrete amount of time passed. 
+When a discrete amount of time has passed the system will notify the user of an 
+event that may have occurred. These events include:
+
+\begin{itemize}
+    \item The SE’s current state (tired, hungry, etc.)
+    \item Relevant metrics for the SE
+    \item The completion of a current project, and the awarded currency
+\end{itemize}
+
+\section{Functional Requirements}
+\label{sec:functional_requirements}
+The following Business Events are all in the User Viewpoint.
+
+
+\begin{enumerate}[start=1, label={\textbf{BE\arabic*.}}]
+	\item The user wants to create his SE
+    \begin{enumerate}[1.]
+        \item The system shall allow the user to choose the name of their SE
+        \item The system shall allow the user to choose the gender of their SE
+        \item The system shall provide the choice to confirm selection
+        \item The system shall provide the choice to restart creation
+    \end{enumerate}
+    
+	\item The user wants to purchase items for the SE
+	\begin{enumerate}[1.]
+		\item The system shall allow the user to browse the in-game store/shop
+        \item The user shall be able to purchase furniture, exercise equipment 
+        and computer upgrades from the shop
+        \item The system shall provide a choice the user to put/remove items 
+        into/from his in-game shopping cart and the total price of the items 
+        inside the cart changes correspondingly
+        \item The system shall allow the user to checkout to purchase all of 
+        the items in his in-game shopping cart
+        \item The system shall check the user’s current currency
+    \end{enumerate}
+    
+    \item The user wants to increase SE’s in-game currency
+	\begin{enumerate}[1.]
+		\item The system shall allow the user to open SE’s workspace
+        \item The system shall provide a choice for the user to select the 
+        project he wants his SE to work on.
+        \item The system shall provide the choice to let SE start working
+        \item The system shall provide the choice to let SE stop working
+        \item Working shall increase the SE’s tiredness level.
+    \end{enumerate}
+    
+    \item Discrete-time step pass in game
+	\begin{enumerate}[1.]
+        \item The system shall award the user in-game currency and programming 
+        experience as the SE completes projects
+        \item If the project the SE is currently working on is completed, the 
+        system shall let SE stop working and notify the user
+        \item The system shall notify the user once any project SE has processed 
+        on passed its due date
+        \item The system shall show updated aggregation of SE’s important 
+        metrics (health, happiness, hunger, age, exercise, tiredness)
+        \item The system shall increase the SE’s hunger level overtime
+        \item The system shall decrease the SE’s exercise level overtime
+        \item The system shall increase the SE’s age overtime
+        \item The system shall notify the user once the SE hungry
+        \item The system shall notify the user once the SE needs to exercise
+        \item The system shall notify the user once the SE needs to rest (SE 
+        reaching its maximum tiredness level)
+        \item The system shall notify the user once the SE is too unhealthy 
+        (close to reaching its end of lifeline)
+        \item The system shall notify the user once the SE reaches its end of 
+        lifeline
+        \item The system shall track the user’s lifespan and record a score
+    \end{enumerate}
+    
+    \item The user wants to access their inventory and use items
+	\begin{enumerate}[1.]
+        \item The system shall allow the user to open the SE’s inventory display 
+        its items
+        \item The system shall allow the user to use/consume the items in SE’s 
+        inventory
+        \item The system shall provide an option to add items to the SE’s 
+        inventory        
+    \end{enumerate}
+
+    \item The user want to interact with objects in the room
+	\begin{enumerate}[1.]
+        \item The system shall allow interaction between the SE and its environment
+        \item Feeding the pet shall decrease the pet’s hunger level
+        \item The system shall allow the SE to use its exercise equipment
+        \item Using exercise equipment shall increase SE’s exercise level
+        \item Using exercise equipment shall increase SE’s tiredness level
+        \item Using exercise equipment frequently shall prolong the SE’s lifespan
+        \item The system shall allow the SE to play games on it’s computer
+        \item Playing game shall increase the SE’s happiness index
+    \end{enumerate}
+
+    \item The user wants to feed the SE
+	\begin{enumerate}[1.]
+        \item The system shall provide an option to order food
+        \item Feeding the SE will reduce its hunger level
+        \item Feeding the SE when it is not hungry shall cause it to be overfed
+        \item Overfeeding the SE will decrease its health level.        
+    \end{enumerate}
+
+    \item The user wants to improve the SE’s skills
+	\begin{enumerate}[1.]
+        \item The system shall allow the user to choose a programming skill of 
+        the SE to upgrade
+        \item Upgrading a certain skill shall cost a certain amount of the SE’s 
+        programming experience.
+        \item Upgrading certain skills shall increase the SE’s income        
+    \end{enumerate}
+
+    \item The user wants to communicate with friends
+	\begin{enumerate}[1.]
+        \item The system shall allow the user to send messages to other users
+        \item The system shall allow the user to receive messages from other users
+        \item The system shall allow the user to share pictures of their room 
+        with other users
+        \item The system shall allow the user to share their current programming 
+        skills with other users               
+    \end{enumerate}
+\end{enumerate}
+
+\section{Non-Functional Requirements}
+\label{sec:non-functional_requirements}
+
+\subsection{Look and Feel Requirements}
+\label{sub:look_and_feel_requirements}
+
+\subsubsection{Appearance Requirements}
+\label{ssub:appearance_requirements}
+\begin{enumerate}[start=1, label={LF\arabic*.}]
+	\item The system shall have a minimalistic design.
+\end{enumerate}
+
+\subsubsection{Style Requirements}
+\label{ssub:style_requirements}
+N/A
+
+\subsection{Usability and Humanity Requirements}
+\label{sub:usability_and_humanity_requirements}
+
+\subsubsection{Ease of Use Requirements}
+\label{ssub:ease_of_use_requirements}
+\begin{enumerate}[start=1, label={UH\arabic*.}]
+	\item The user shall face a minimal number of errors. 
+	\item The errors shall have a descriptive message.
+\end{enumerate}
+
+\subsubsection{Personalization and Internationalization Requirements}
+\label{ssub:personalization_and_internationalization_requirements}
+\begin{enumerate}[start=3, label={UH\arabic*.}]
+	\item The user shall be able to personalize the SE’s name and gender.
+\end{enumerate}
+
+\subsubsection{Learning Requirements}
+\label{ssub:learning_requirements}
+\begin{enumerate}[start=4, label={UH\arabic*.}]
+    \item The user shall be able to learn the game mechanics through a quick 
+    tutorial.
+\end{enumerate}
+
+\subsubsection{Understandability and Politeness Requirements}
+\label{ssub:understandability_and_politeness_requirements}
+\begin{enumerate}[start=5, label={UH\arabic*.}]
+    \item The system icons shall be taken from their common usage icons where 
+    applicable. 
+    \item The user shall only be promoted with a confirmation box when necessary.
+\end{enumerate}
+
+\subsubsection{Accessibility Requirements}
+\label{ssub:accessibility_requirements}
+\begin{enumerate}[start=7, label={UH\arabic*.}]
+	\item The system shall have subtitles under each icon.
+\end{enumerate}
+
+\subsection{Performance Requirements}
+\label{sub:performance_requirements}
+
+\subsubsection{Speed and Latency Requirements}
+\label{ssub:speed_and_latency_requirements}
+\begin{enumerate}[start=1, label={PR\arabic*.}]
+	\item The system shall respond to a user’s input within 5ms.
+\end{enumerate}
+
+\subsubsection{Safety-Critical Requirements}
+\label{ssub:safety_critical_requirements}
+N/A
+
+\subsubsection{Precision or Accuracy Requirements}
+\label{ssub:precision_or_accuracy_requirements}
+\begin{enumerate}[start=2, label={PR\arabic*.}]
+	\item The system shall record all numerical data upto 8 decimal places.
+\end{enumerate}
+
+\subsubsection{Reliability and Availability Requirements}
+\label{ssub:reliability_and_availability_requirements}
+\begin{enumerate}[start=3, label={PR\arabic*.}]
+    \item The system shall be available at all times except for 2 hours a week 
+    for maintenance.
+\end{enumerate}
+
+\subsubsection{Robustness or Fault-Tolerance Requirements}
+\label{ssub:robustness_or_fault_tolerance_requirements}
+\begin{enumerate}[start=4, label={PR\arabic*.}]
+    \item When network connection during multiplayer is lost, the system will 
+    switch to single-player.
+\end{enumerate}
+
+\subsubsection{Capacity Requirements}
+\label{ssub:capacity_requirements}
+\begin{enumerate}[start=5, label={PR\arabic*.}]
+	\item The system will allow two users to interact via an online session.
+	\item The system will store the player data.
+\end{enumerate}
+
+\subsubsection{Scalability or Extensibility Requirements}
+\label{ssub:scalability_or_extensibility_requirements}
+N/A
+
+\subsubsection{Longevity Requirements}
+\label{ssub:longevity_requirements}
+\begin{enumerate}[start=7, label={PR\arabic*.}]
+    \item The system shall be built and maintained for the duration of the 
+    project ending in April 2020.
+\end{enumerate}
+
+\subsection{Operational and Environmental Requirements}
+\label{sub:operational_and_environmental_requirements}
+
+\subsubsection{Expected Physical Environment}
+\label{ssub:expected_physical_environment}
+N/A
+
+\subsubsection{Requirements for Interfacing with Adjacent Systems}
+\label{ssub:requirements_for_interfacing_with_adjacent_systems}
+N/A
+
+\subsubsection{Productization Requirements}
+\label{ssub:productization_requirements}
+\begin{enumerate}[start=1, label={OE\arabic*.}]
+    \item The system shall be distributed via an online repository. 
+    \item The system shall be packaged in an executable file (.exe and .app).
+\end{enumerate}
+
+\subsubsection{Release Requirements}
+\label{ssub:release_requirements}
+\begin{enumerate}[start=3, label={OE\arabic*.}]
+    \item The system shall have one release at the beginning of April 2020.
+\end{enumerate}
+
+\subsection{Maintainability and Support Requirements}
+\label{sub:maintainability_and_support_requirements}
+
+\subsubsection{Maintenance Requirements}
+\label{ssub:maintenance_requirements}
+N/A
+
+\subsubsection{Supportability Requirements}
+\label{ssub:supportability_requirements}
+\begin{enumerate}[start=1, label={MS\arabic*.}]
+    \item The system shall have a tutorial for explanation of the game.
+\end{enumerate}
+
+\subsubsection{Adaptability Requirements}
+\label{ssub:adaptability_requirements}
+N/A
+
+\subsection{Security Requirements}
+\label{sub:security_requirements}
+
+\subsubsection{Access Requirements}
+\label{ssub:access_requirements}
+\begin{enumerate}[start=1, label={SR\arabic*.}]
+    \item All project members shall have authorized access to all parts of the 
+    system at all times.
+\end{enumerate}
+
+\subsubsection{Integrity Requirements}
+\label{ssub:integrity_requirements}
+N/A
+
+\subsubsection{Privacy Requirements}
+\label{ssub:privacy_requirements}
+N/A
+
+\subsubsection{Audit Requirements}
+\label{ssub:audit_requirements}
+N/A
+
+\subsubsection{Immunity Requirements}
+\label{ssub:immunity_requirements}
+N/A
+
+\subsection{Cultural and Political Requirements}
+\label{sub:cultural_and_political_requirements}
+
+\subsubsection{Cultural Requirements}
+\label{ssub:cultural_requirements}
+N/A
+
+\subsubsection{Political Requirements}
+\label{ssub:political_requirements}
+N/A
+
+\subsection{Legal Requirements}
+\label{sub:legal_requirements}
+
+\subsubsection{Compliance Requirements}
+\label{ssub:compliance_requirements}
+N/A
+
+\subsubsection{Standards Requirements}
+\label{ssub:standards_requirements}
+N/A
+
+\newpage
+\appendix
+\section{Division of Labour}
+\label{sec:division_of_labour}
+\begin{table}[H]
+    \centering
+    \caption{Division of Labour}
+    \begin{tabular}{|p{2.5cm}|p{2.5cm}|p{10.5cm}|}
+        \hline
+        \textbf{Section} & \textbf{Contributor(s)} & \textbf{Description}\\
+        \hline
+        \textbf{Brainstorming} & All Members & Developed an idea for the project 
+        and answered the minimum requirement questions\\
+        \hline
+        \textbf{Introduction} & Christopher Vishnu & Completed and revised 
+        the introduction\\
+        \hline
+        \textbf{Overall Description} & Shengchen Zhou, Andrew Hum & Shengchen 
+        completed all the sections in the Overall Description. Andrew revised 
+        the sections and checked for grammar and consistency.\\
+        \hline
+        \textbf{Functional Requirements} & Andrew Hum, Hongzhao Tan & Both 
+        contributors developed and revised all the Business Events and 
+        Functional Requirements\\
+        \hline
+        \textbf{Non-Functional Requirements} & Arkin Modi & Completed and 
+        revised all the non-functional requirements\\
+        \hline
+    \end{tabular}
+\end{table}
+
+\vspace{2cm}
+
+\begin{table}[H]
+    \begin{tabular}{p{5cm}}
+    \\
+    \hline
+    Andrew Hum
+    \\\\\\\\
+    \hline
+    Arkin Modi
+    \\\\\\\\
+    \hline
+    Hongzhao Tan
+    \\\\\\\\
+    \hline
+    Christopher Vishnu
+    \\\\\\\\
+    \hline
+    Shengchen Zhou
+    \end{tabular}
+\end{table}
+
+\end{document}
+%------------------------------------------------------------------------------

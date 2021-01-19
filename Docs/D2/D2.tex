@@ -1,0 +1,722 @@
+% !TeX root = ./D2.tex
+\documentclass[]{article}
+
+% Imported Packages
+%------------------------------------------------------------------------------
+\usepackage{amssymb}
+\usepackage{amstext}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{enumerate}
+\usepackage{fancyhdr}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{extarrows}
+\usepackage{setspace}
+\usepackage{float}
+\usepackage{makecell}
+%------------------------------------------------------------------------------
+
+% Header and Footer
+%------------------------------------------------------------------------------
+\pagestyle{plain}  
+\renewcommand\headrulewidth{0.4pt}                                      
+\renewcommand\footrulewidth{0.4pt}                                    
+%------------------------------------------------------------------------------
+
+% Title Details
+%------------------------------------------------------------------------------
+\title{
+    \textbf{Group 10 - Deliverable \#2}\\
+    \large SFWRENG 3A04: Software Design III - Large System Design
+}
+\author{
+    Andrew Hum 400138826\\
+    Arkin Modi 400142497\\
+    Hongzhao Tan 400136957\\
+    Christopher Vishnu 400129743\\
+    Shengchen Zhou 400050783\\
+}
+\date{March 5, 2020}
+%------------------------------------------------------------------------------
+
+% Document
+%------------------------------------------------------------------------------
+\begin{document}
+
+\maketitle
+\newpage
+
+\section{Introduction}
+\label{sec:introduction}
+
+\subsection{Purpose}
+\label{sub:purpose}
+The purpose of the document is to focus on the architecture of the HackerSim 
+system. The system's architecture is based upon business events developed in 
+Deliverable 1 to outline the components of the HackerSim software for both the 
+client and the developer. It covers the architectural decisions that have been 
+made regarding the system and its components. This document is intended for the 
+project manager, the current project team and any future development teams for 
+the HackerSim Project.
+
+\subsection{System Description}
+\label{sub:system_description}
+The HackerSim system is an interactive game that will allow the user to raise a 
+Software Engineer in their room. The main component of our software would be 
+the General Room which is the link that interacts with the rest of the 
+sub-components. The main sub-components that the General Room interacts with 
+which would be the Shop, Friends and Chat, Project and the Time-step. The Shop 
+component focuses on interacting with the inventory for purchasing and browsing 
+items. The Friends and Chat component focuses on providing message functionality 
+between the user and the friends. The Project component focuses on the project 
+and future projects the Software Engineer has to do to gain in-game currency. 
+Finally, the Time-step component focuses on the passage of time and which 
+affects the Software Engineer’s attributes.
+
+\subsection{Overview}
+\label{sub:overview}
+This document is organized by the following sections: Analysis Class Diagram, 
+Architectural Design, Class Responsibility Collaboration Cards. Analysis Class 
+Diagram focuses on providing details about the structure of the classes and 
+their relationships. Architectural Design focuses on the overall architectural 
+design of the HackerSim application, showing the division of the system into 
+subsystems. Finally, Class Responsibility Collaboration (CRC) Cards focus on 
+each individual class and its responsibilities and relations in which they 
+collaborate with other classes.
+
+\subsection{Definitions, Acronyms, Abbreviations}
+\label{sub:definitions_acronyms_abbreviations}
+SE - Software Engineer
+
+\section{Analysis Class Diagram}
+\label{sec:analysis_class_diagram}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.4]{"Analysis Class Diagram".png}
+    \caption{Analysis Class Diagram for Hacker Sim}
+\end{figure}
+
+
+\section{Architectural Design}
+\label{sec:architectural_design}
+
+\subsection{System Architecture}
+\label{sub:system_architecture}
+The architecture style that we will be using for our system is an architecture 
+that is interaction-oriented; Presentation-Abstraction-Control (PAC). Among the 
+other architectural styles, data-centric and data-flow architecture, we felt 
+that an interaction-oriented architecture would fit our project the best. We 
+believe this because this type of architecture is most appropriate when there 
+is a need to separate the user’s interactions from the data abstraction and 
+data processing. This type of architecture effectively divides the data into 
+logical sections and allows an effective presentation of content based on 
+changes in the data utilizing the view modules. From interaction-oriented 
+architecture, there were two possible routes to take, Model-View-Controller 
+(MVC) architecture and Presentation-Abstraction-Control (PAC) architecture. We 
+chose to use Presentation-Abstraction-Control as it emphasizes a hierarchical 
+architecture that allows low-coupling of agents protecting other agents from 
+being modified by the changes of one. In essence, this will provide us with an 
+effective way to identify our core entities and link them to relevant agents 
+with ease. It will also allow multiple agents to perform their tasks, and update 
+their view accordingly without affecting the other agents. MVC highly depends 
+upon a uniform data set for all views that changes at a constant rate. Given that 
+we have several different entities, each with their unique data set that will 
+be updated at different rates, the need for PAC architecture for our system is 
+evident.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{"PAC Structural Architecture Diagram".png}
+    \caption{PAC Structural Architecture Diagram}
+\end{figure}
+
+\subsection{Subsystems}
+\label{sub:subsystems}
+The following are explanations of the subsystems for our project that outline 
+their purpose and relationship to other subsystems.
+\begin{enumerate}
+    \item General (Room)\\
+    Purpose: This agent is the highest-level agent that controls every other 
+    agent and presents the default ‘room’ view as well as ability to interact 
+    with the objects, shop, friends and the SE\\
+    Direct Relationships: Shop, Friends and Chat, Projects    
+    \item Shop\\
+    Purpose: This agent is an intermediate-level agent that controls the user’s 
+    interactions with the shop, including purchasing and browsing items. This 
+    agent may then update the SE’s inventory if the user chooses to purchase an 
+    item.\\
+    Direct Relationships: SE Inventory, User Attributes, General (Room)
+    \item Friends \& Chat\\
+    Purpose: This agent is an intermediate-level agent that stores data on chat 
+    history, and provides the user with the ability to message friends based on 
+    the user’s friends list.\\
+    Direct Relationships: User’s Attributes, General (Room)
+    \item Projects\\
+    Purpose: This intermediate-level agent stores information regarding current 
+    and future projects the SE may work on to gain currency.\\
+    Direct Relationships: User’s Attributes, SE Attributes, General (Room), 
+    Time-Step
+    \item Time-Step\\
+    Purpose: This intermediate-level agent controls the passage of time, and 
+    signals the SE Attributes accordingly with changes in their current state 
+    or information. These changes include hunger, project completion, tiredness 
+    level, happiness change, etc.\\
+    Direct Relationships: SE Attributes, Projects
+    \item Software Engineer (SE) Inventory\\
+    Purpose: This bottom-level agent stores data based on the items in the SE’s 
+    inventory and adjusts the data and view based upon the user’s interactions 
+    with the store or through the use of items.\\
+    Direct Relationships: Shop, SE Attributes
+    \item Software Engineer (SE) Attributes\\
+    Purpose: This bottom-level agent stores data based on the SE’s current 
+    attributes such as their happiness index, how tired they are, if they are 
+    hungry, if they completed a project, etc. These attributes may be adjusted 
+    by the Time-Step agent or the Project agent, or changed directly by the 
+    user.\\
+    Direct Relationships: Projects, Time-Step, SE Inventory
+    \item User Attributes\\
+    Purpose: This bottom-level agent stores data based on the user’s current 
+    attributes. Some data is immutable and may not be changed throughout the 
+    game, however, there is data that may be manipulated by the project 
+    controller, providing the user with skill points to increase the SE’s 
+    ability, a change in their current balance, and addition or removal or 
+    friends.\\
+    Direct Relationships: Shop, Friends and Chat, Projects
+\end{enumerate}
+	
+\section{Class Responsibility Collaboration (CRC) Cards}
+\label{sec:class_responsibility_collaboration_crc_cards}
+\subsection{Entity Class CRC Cards}
+\label{sec:entity_class_CRC_cards}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{7.5cm}|p{7.5cm}|}
+        \hline
+        \multicolumn{2}{|l|}{\textbf{Class Name:} General Room}\\
+        \hline
+        \textbf{Responsibility:} & \textbf{Collaborators:}\\
+        \hline
+        Store SE current state (gaming, working, exercising, sleeping, etc) & ~\\
+        ~ & ~\\
+        Store room items (exercise equipment, furniture) & ~\\
+        ~ & ~\\
+        Store room size & ~\\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{7.5cm}|p{7.5cm}|}
+        \hline
+        \multicolumn{2}{|l|}{\textbf{Class Name:} User Attributes}\\
+        \hline
+        \textbf{Responsibility:} & \textbf{Collaborators:}\\
+        \hline
+        Store currency & ~\\
+        ~ & ~\\
+        Store coding experience level & ~\\
+        ~ & ~\\
+        Store friends list & ~\\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{7.5cm}|p{7.5cm}|}
+        \hline
+        \multicolumn{2}{|l|}{\textbf{Class Name:} SE Attributes}\\
+        \hline
+        \textbf{Responsibility:} & \textbf{Collaborators:}\\
+        \hline
+        Store SE’s name and sex & ~\\
+        ~ & ~\\
+        Store SE’s current state (happiness, tiredness, hunger, etc.) & ~\\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{7.5cm}|p{7.5cm}|}
+        \hline
+        \multicolumn{2}{|l|}{\textbf{Class Name:} SE Inventory}\\
+        \hline
+        \textbf{Responsibility:} & \textbf{Collaborators:}\\
+        \hline
+        Store SE’s items and quantities & ~\\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{7.5cm}|p{7.5cm}|}
+        \hline
+        \multicolumn{2}{|l|}{\textbf{Class Name:} Shop}\\
+        \hline
+        \textbf{Responsibility:} & \textbf{Collaborators:}\\
+        \hline
+        Store items and prices & ~\\
+        ~ & ~\\
+        Store skills and prices & ~\\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{7.5cm}|p{7.5cm}|}
+        \hline
+        \multicolumn{2}{|l|}{\textbf{Class Name:} Projects}\\
+        \hline
+        \textbf{Responsibility:} & \textbf{Collaborators:}\\
+        \hline
+        Store all projects & ~\\
+        ~ & ~\\
+        Store project information (name, deadline, reward, skills required, completion status) & ~\\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{7.5cm}|p{7.5cm}|}
+        \hline
+        \multicolumn{2}{|l|}{\textbf{Class Name:} Time-Step}\\
+        \hline
+        \textbf{Responsibility:} & \textbf{Collaborators:}\\
+        \hline
+        Store time elapsed & ~\\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{7.5cm}|p{7.5cm}|}
+        \hline
+        \multicolumn{2}{|l|}{\textbf{Class Name:} Chat History}\\
+        \hline
+        \textbf{Responsibility:} & \textbf{Collaborators:}\\
+        \hline
+        Store all chat history and username of the user communicating with  & ~\\
+        \hline
+    \end{tabular}
+\end{table}
+
+\subsection{Boundary Class CRC Cards}
+\label{sec:boundary_class_CRC_cards}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{7.5cm}|p{7.5cm}|}
+        \hline
+        \multicolumn{2}{|l|}{\textbf{Class Name:} General Room Interface}\\
+        \hline
+        \textbf{Responsibility:} & \textbf{Collaborators:}\\
+        \hline
+        Present SE current state (gaming, sleeping, exercising, working) & General Room Controller\\
+        ~ & ~\\
+        Present room based on size & General Room Controller\\
+        ~ & ~\\
+        Present room items (furniture, equipment, etc) & General Room Controller\\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{7.5cm}|p{7.5cm}|}
+        \hline
+        \multicolumn{2}{|l|}{\textbf{Class Name:} User Information Interface}\\
+        \hline
+        \textbf{Responsibility:} & \textbf{Collaborators:}\\
+        \hline
+        Present username & User Attributes Controller\\
+        ~ & ~\\
+        Present user’s currency & User Attributes Controller\\
+        ~ & ~\\
+        Present coding experience level & User Attributes Controller\\
+        ~ & ~\\
+        Present user’s friends & User Attributes Controller\\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{7.5cm}|p{7.5cm}|}
+        \hline
+        \multicolumn{2}{|l|}{\textbf{Class Name:} Settings Interface}\\
+        \hline
+        \textbf{Responsibility:} & \textbf{Collaborators:}\\
+        \hline
+        Present option to quit & General Room Controller\\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{7.5cm}|p{7.5cm}|}
+        \hline
+        \multicolumn{2}{|l|}{\textbf{Class Name:} SE Creation UI}\\
+        \hline
+        \textbf{Responsibility:} & \textbf{Collaborators:}\\
+        \hline
+        Receive input for SE traits (name, sex) & SE Attributes Controller\\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{7.5cm}|p{7.5cm}|}
+        \hline
+        \multicolumn{2}{|l|}{\textbf{Class Name:} SE Attribute UI}\\
+        \hline
+        \textbf{Responsibility:} & \textbf{Collaborators:}\\
+        \hline
+        Present SE Attributes (sex, name, happiness, hunger, skill, fitness level, tiredness level) & SE Attributes Controller\\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{7.5cm}|p{7.5cm}|}
+        \hline
+        \multicolumn{2}{|l|}{\textbf{Class Name:} SE Inventory UI}\\
+        \hline
+        \textbf{Responsibility:} & \textbf{Collaborators:}\\
+        \hline
+        Present items list & SE Inventory Controller\\
+        ~ & ~\\
+        Receive input to use items & SE Inventory Controller\\
+        ~ & ~\\
+        Receive input to discard items & SE Inventory Controller\\
+        ~ & ~\\
+        Use Items & SE Inventory Controller\\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{7.5cm}|p{7.5cm}|}
+        \hline
+        \multicolumn{2}{|l|}{\textbf{Class Name:} Exercise Equipment}\\
+        \hline
+        \textbf{Responsibility:} & \textbf{Collaborators:}\\
+        \hline
+        Receive input to let SE take exercise & General (Room) Controller\\
+        ~ & ~\\
+        Receive input to let SE finish exercise & General (Room) Controller\\
+        ~ & ~\\
+        Show that SE is exercising & ~\\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{7.5cm}|p{7.5cm}|}
+        \hline
+        \multicolumn{2}{|l|}{\textbf{Class Name:} Gaming}\\
+        \hline
+        \textbf{Responsibility:} & \textbf{Collaborators:}\\
+        \hline
+        Receive input to let SE play games & SE Attributes Controller\\
+        ~ & ~\\
+        Receive input to let SE stop playing games & SE Attributes Controller\\
+        ~ & ~\\
+        Show that SE is gaming & ~\\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{7.5cm}|p{7.5cm}|}
+        \hline
+        \multicolumn{2}{|l|}{\textbf{Class Name:} Sleeping}\\
+        \hline
+        \textbf{Responsibility:} & \textbf{Collaborators:}\\
+        \hline
+        Receive input to let SE play sleep & SE Attributes Controller\\
+        ~ & ~\\
+        Show that SE is sleeping & ~\\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{7.5cm}|p{7.5cm}|}
+        \hline
+        \multicolumn{2}{|l|}{\textbf{Class Name:} Shop UI}\\
+        \hline
+        \textbf{Responsibility:} & \textbf{Collaborators:}\\
+        \hline
+        Present item list with prices & Shop Controller\\
+        ~ & ~\\
+        Receive input to purchase items/skills & Shop Controller\\
+        ~ & ~\\
+        Present programming skills unowned by SE & Shop Controller\\
+        ~ & ~\\
+        Present skills information & Shop Controller\\
+        ~ & ~\\
+        Filter item list & Shop Controller\\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{7.5cm}|p{7.5cm}|}
+        \hline
+        \multicolumn{2}{|l|}{\textbf{Class Name:} Project UI}\\
+        \hline
+        \textbf{Responsibility:} & \textbf{Collaborators:}\\
+        \hline
+        Present software projects for SE & Project Controller\\
+        ~ & ~\\
+        Present projects information (profit, skills required, deadline, completion) & Project Controller\\
+        ~ & ~\\
+        Receive input to let SE start projects & Project Controller\\
+        ~ & ~\\
+        Receive input to let SE complete projects & Project Controller\\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{7.5cm}|p{7.5cm}|}
+        \hline
+        \multicolumn{2}{|l|}{\textbf{Class Name:} Friends Message UI}\\
+        \hline
+        \textbf{Responsibility:} & \textbf{Collaborators:}\\
+        \hline
+        Present user’s friends list & Friend and Chat Controller\\
+        ~ & ~\\
+        Present user current chat & Friend and Chat Controller\\
+        ~ & ~\\
+        Receive input to send message/chat & Friend and Chat Controller\\
+        \hline
+    \end{tabular}
+\end{table}
+
+\subsection{Controller Class CRC Cards}
+\label{sec:controller_class_CRC_cards}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{7.5cm}|p{7.5cm}|}
+        \hline
+        \multicolumn{2}{|l|}{\textbf{Class Name:} General Room Controller}\\
+        \hline
+        \textbf{Responsibility:} & \textbf{Collaborators:}\\
+        \hline
+        Update SE state & \makecell[l]{General Room \\ General Room Interface \\ SE Attributes Controller}\\
+        ~ & ~\\
+        Update room state & \makecell[l]{General Room \\ General Room Interface}\\
+        ~ & ~\\
+        Open the Shop & Shop Controller\\
+        ~ & ~\\
+        Open the Inventory & SE Inventory Controller\\
+        ~ & ~\\
+        Access User Attributes & User Attributes Controller\\
+        ~ & ~\\
+        Access SE Attributes & SE Attributes Controller\\
+        ~ & ~\\
+        Access Projects & Project Controller\\
+        ~ & ~\\
+        Access Friend and Chat & Friend and Chat Controller\\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{7.5cm}|p{7.5cm}|}
+        \hline
+        \multicolumn{2}{|l|}{\textbf{Class Name:} User Attributes Controller}\\
+        \hline
+        \textbf{Responsibility:} & \textbf{Collaborators:}\\
+        \hline
+        Update currency as requested by collaborating controller classes & \makecell[l]{Shop Controller\\Project Controller\\User Attributes}\\
+        ~ & ~\\
+        Update coding experience level as requested by collaborating controller classes & \makecell[l]{Shop Controller\\Project Controller\\User Attributes}\\
+        ~ & ~\\
+        Update friends list after adding or removing a friend & \makecell[l]{Friends and Chat Controller\\User Attributes}\\
+        ~ & ~\\
+        Update User Information Interface & \makecell[l]{User Attributes\\User Information Interface}\\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{7.5cm}|p{7.5cm}|}
+        \hline
+        \multicolumn{2}{|l|}{\textbf{Class Name:} SE Attribute Controller}\\
+        \hline
+        \textbf{Responsibility:} & \textbf{Collaborators:}\\
+        \hline
+        Set SE’s name during creation & \makecell[l]{SE Creation UI\\SE Attributes}\\
+        ~ & ~\\
+        Choose SE’s sex during creation & \makecell[l]{SE Creation UI\\SE Attributes}\\
+        ~ & ~\\
+        Update hunger level by a discrete-time passing & \makecell[l]{Time-step Controller\\SE Attributes}\\
+        ~ & ~\\
+        Decrease hunger level as user using “food” items in Inventory & \makecell[l]{Inventory Controller\\SE Attributes}\\
+        ~ & ~\\
+        Update happiness level by playing game for discrete-time pass & \makecell[l]{Gaming\\SE Attributes\\Time-Step Controller}\\
+        ~ & ~\\
+        Update tiredness level by working & \makecell[l]{Project Controller\\Exercise Equipment\\Time-Step Controller\\SE Attributes}\\
+        ~ & ~\\
+        Increase overall fitness level by using exercise equipment and increase tiredness level & \makecell[l]{Exercise Equipment\\SE Attributes}\\
+        ~ & ~\\
+        Prolong lifespan by using exercise equipment frequently enough & \makecell[l]{Exercise Equipment\\SE Attributes}\\
+        ~ & ~\\
+        Update SE’s skills after using skill in Inventory & \makecell[l]{Inventory Controller\\SE Attributes}\\
+        ~ & ~\\
+        Update SE’s tiredness by sleeping & \makecell[l]{SE Attributes\\Sleeping\\Time-Step controller}\\
+        ~ & ~\\
+        Update SE attributes UI & \makecell[l]{SE Attribute UI\\SE Attributes}\\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{7.5cm}|p{7.5cm}|}
+        \hline
+        \multicolumn{2}{|l|}{\textbf{Class Name:} SE Inventory Controller}\\
+        \hline
+        \textbf{Responsibility:} & \textbf{Collaborators:}\\
+        \hline
+        Update Inventory (addition or removal of items) & \makecell[l]{SE Attribute Controller\\Shop controller\\SE Inventory UI\\SE Inventory}\\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{7.5cm}|p{7.5cm}|}
+        \hline
+        \multicolumn{2}{|l|}{\textbf{Class Name:} Time-Step Controller}\\
+        \hline
+        \textbf{Responsibility:} & \textbf{Collaborators:}\\
+        \hline
+        Update value of in-game time & Time-Step\\
+        ~ & ~\\
+        Increase SE’s hunger after a discrete-time pass & SE Attributes Controller\\
+        ~ & ~\\
+        Increase SE’s happiness after gaming for a discrete-time pass & SE Attributes Controller\\
+        ~ & ~\\
+        Increase SE’s tiredness after working for a discrete-time pass & SE Attributes Controller\\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{7.5cm}|p{7.5cm}|}
+        \hline
+        \multicolumn{2}{|l|}{\textbf{Class Name:} Shop Controller}\\
+        \hline
+        \textbf{Responsibility:} & \textbf{Collaborators:}\\
+        \hline
+        Decrease user’s currency/coding experience level after purchasing items/skills & \makecell[l]{User Attributes Controller\\Shop}\\
+        ~ & ~\\
+        Adding item(s)/skill(s) purchased into Inventory & \makecell[l]{SE Inventory Controller\\Shop}\\
+        ~ & ~\\
+        Updates Shop UI as features of filter being specified & \makecell[l]{Shop UI\\Shop}\\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{7.5cm}|p{7.5cm}|}
+        \hline
+        \multicolumn{2}{|l|}{\textbf{Class Name:} Project Controller}\\
+        \hline
+        \textbf{Responsibility:} & \textbf{Collaborators:}\\
+        \hline
+        Reward a specific amount of currency and coding experience level to user after completion of project (according to “reward”) & \makecell[l]{User Attributes Controller\\Projects}\\
+        ~ & ~\\
+        Updates Projects & Projects\\
+        ~ & ~\\
+        Update Projects UI & \makecell[l]{Project UI\\Projects}\\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{7.5cm}|p{7.5cm}|}
+        \hline
+        \multicolumn{2}{|l|}{\textbf{Class Name:} Friends and Chat Controller}\\
+        \hline
+        \textbf{Responsibility:} & \textbf{Collaborators:}\\
+        \hline
+        Update Chat history & \makecell[l]{Friends Messaging UI\\Chat History}\\
+        ~ & ~\\
+        Update Friend List & \makecell[l]{Friends Messaging UI\\User Attributes Controller}\\
+        \hline
+    \end{tabular}
+\end{table}
+
+\newpage
+\appendix
+\section{Division of Labour}
+\label{sec:division_of_labour}
+\begin{table}[H]
+    \centering
+    \caption{Division of Labour}
+    \begin{tabular}{|p{2.5cm}|p{2.5cm}|p{10.5cm}|}
+        \hline
+        \textbf{Section} & \textbf{Contributor(s)} & \textbf{Description}\\
+        \hline
+        \textbf{Introduction} & Christopher Vishnu & Completed and revised all sections\\
+        \hline
+        \textbf{Analysis Class Diagram} & Arkin Modi, Andrew Hum, Shengchen Zhou, Hongzhao Tan & Arkin made and revised the Analysis Class Diagram. Andrew, Shengchen and Hongzhao developed the classes and their categories.\\
+        \hline
+        \textbf{Architecture Design} & Andrew Hum & Completed and revised all sections.\\
+        \hline
+        \textbf{Class Responsibility Collaboration Cards} & Andrew Hum, Shengchen Zhou, Hongzhao Tan & Contributors all developed the CRC cards. Andrew and Hongzhao thoroughly revised the CRC cards in correspondence with the Analysis Class Diagram and the Architecture Design.\\
+        \hline
+    \end{tabular}
+\end{table}
+
+\vspace{2cm}
+
+\begin{table}[H]
+    \begin{tabular}{p{5cm}}
+    \\
+    \hline
+    Andrew Hum
+    \\\\\\\\
+    \hline
+    Arkin Modi
+    \\\\\\\\
+    \hline
+    Hongzhao Tan
+    \\\\\\\\
+    \hline
+    Christopher Vishnu
+    \\\\\\\\
+    \hline
+    Shengchen Zhou
+    \end{tabular}
+\end{table}
+
+\end{document}
+%------------------------------------------------------------------------------

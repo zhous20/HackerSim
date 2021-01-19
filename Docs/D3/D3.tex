@@ -1,0 +1,261 @@
+% !TeX root = ./D3.tex
+\documentclass[]{article}
+
+% Imported Packages
+%------------------------------------------------------------------------------
+\usepackage{amssymb}
+\usepackage{amstext}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{enumerate}
+\usepackage{fancyhdr}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{extarrows}
+\usepackage{setspace}
+\usepackage{float}
+\usepackage{multirow}
+%------------------------------------------------------------------------------
+
+% Header and Footer
+%------------------------------------------------------------------------------
+\pagestyle{plain}  
+\renewcommand\headrulewidth{0.4pt}                                      
+\renewcommand\footrulewidth{0.4pt}                                    
+%------------------------------------------------------------------------------
+
+% Title Details
+%------------------------------------------------------------------------------
+\title{
+    \textbf{Group 10 - Deliverable \#3}\\
+    \large SFWRENG 3A04: Software Design III - Large System Design\\
+    \large Tutorial 1
+}
+\author{
+    Andrew Hum 400138826\\
+    Arkin Modi 400142497\\
+    Hongzhao Tan 400136957\\
+    Christopher Vishnu 400129743\\
+    Shengchen Zhou 400050783\\
+}
+\date{March 20, 2020}           
+%------------------------------------------------------------------------------
+
+% Document
+%------------------------------------------------------------------------------
+\begin{document}
+
+\maketitle
+\newpage
+
+\section{Introduction}
+\label{sec:introduction}
+
+
+\subsection{Purpose}
+\label{sub:purpose}
+The purpose of this document is to demonstrate HackerSim through various 
+Unified Modelling Language (UML) diagrams. Utilizing the use-case diagrams and 
+business events from Deliverable 1, as well as the analysis class diagram, 
+architectural diagram and class responsibility collaboration (CRC) cards from 
+Deliverable 2, we can create effective and detailed state diagrams, sequence 
+diagrams and a class diagram. These UML diagrams will outline the states, 
+sequence of interactions and core data structures that HackerSim is compiled 
+of. This document is intended for the project manager, current members of the 
+project team, future developers and stakeholders for the HackerSim project.
+
+\subsection{System Description}
+\label{sub:system_description}
+The HackerSim system is an interactive game that will allow the user to raise a
+Software Engineer (SE) in their room. The user will have various control 
+options over their SE to assist them in their growth as well as the ability to 
+customize their Software Engineer to their liking. These control options 
+include choosing when the SE will work, play games, exercise, sleep and eat. 
+Working will increase the SE’s currency and provide them with the ability to 
+purchase various items for their room or food for when they’re hungry. Each of 
+these activities will also directly affect the SE’s attributes in some manner 
+and may extend or reduce its lifespan. Users will also have the ability to add 
+friends and converse with them.\\
+
+\noindent HackerSim utilizes a Presentation-Abstraction-Control (PAC) 
+architecture that partitions the system into agents (triads) each containing a 
+controller, entity object, and various presentation views. The system is broken
+down into the following agents: General (Room), User Attributes, SE Attributes,
+Shop, SE Inventory, Projects, Time-Step, and Friends \& Chat. These agents 
+communicate with one another to control the data flow through the entire system
+that is HackerSim.
+
+
+\subsection{Overview}
+\label{sub:overview}
+The document is organized by the following sections: State Charts for 
+Controller Classes, Sequence Diagrams and Detailed Class Diagram.
+
+\begin{itemize}
+    \item[] Section 2 contains State Chart Diagrams, built from the controllers 
+    from the Analysis Class Diagram from Deliverable 2, that depicts the 
+    system’s states and the events required for transitions
+
+    \item[] Section 3 - contains Sequence Diagrams, built from the Use Case 
+    Diagrams and Business Events from Deliverable 1, that visually explain the 
+    flow of interactions between the user and the system
+
+    \item[] Section 4 contains a Class Diagram, built from the CRC cards from 
+    Deliverable 2, that defines the core data structures of the system
+\end{itemize}
+
+\section{State Charts for Controller Classes}
+\label{sec:state_charts_for_controller_classes}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{"State Charts/State Chart - SE's Attributes Controller".png}
+    \caption{State Chart - SE’s Attributes}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{"State Charts/State Chart - Time-Step Controller".png}
+    \caption{State Chart - Time-Step Controller}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{"State Charts/State Chart - Project".png}
+    \caption{State Chart - Projects}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{"State Charts/State Chart - Friends and Chat".png}
+    \caption{State Chart - Friends and Chat}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{"State Charts/State Chart - User Attributes".png}
+    \caption{State Chart - User Attributes}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{"State Charts/State Chart - General Room".png}
+    \caption{State Chart - General Room}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{"State Charts/State Chart - Shop".png}
+    \caption{State Chart - Shop}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{"State Charts/State Chart - Inventory".png}
+    \caption{State Chart - Inventory}
+\end{figure}
+
+\section{Sequence Diagrams}
+\label{sec:sequence_diagrams}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{"Sequence Diagrams/Sequence Diagram - BE1".png}
+    \caption{Sequence Diagram - User creates SE}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{"Sequence Diagrams/Sequence Diagram - BE2".png}
+    \caption{Sequence Diagram - SE Purchases Items and Skills}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{"Sequence Diagrams/Sequence Diagram - BE3".png}
+    \caption{Sequence Diagram - SE Works on Projects}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{"Sequence Diagrams/Sequence Diagram - BE4".png}
+    \caption{Sequence Diagram - Discrete-Time Pass}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth, trim={0 7cm 0 0}, clip]{"Sequence Diagrams/Sequence Diagram - BE5".png}
+    \caption{Sequence Diagram - User Interaction with Room Objects}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{"Sequence Diagrams/Sequence Diagram - BE6".png}
+    \caption{Sequence Diagram - Access Inventory and Use Items}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{"Sequence Diagrams/Sequence Diagram - BE7".png}
+    \caption{Sequence Diagram - Communication with Friends via Chat}
+\end{figure}
+
+\section{Detailed Class Diagram}
+\label{sec:detailed_class_diagram}
+\begin{figure}[H]
+    \centering
+    \makebox[\textwidth][c]{\includegraphics[width=1.2\textwidth]{"Detailed Class Diagram".png}}
+    \caption{Detailed Class Diagram - HackerSim}
+\end{figure}
+
+\newpage
+\appendix
+\section{Division of Labour}
+\label{sec:division_of_labour}
+\begin{table}[H]
+    \centering
+    \caption{Division of Labour}
+    \begin{tabular}{|p{2.5cm}|p{4cm}|p{9cm}|}
+        \hline
+        \textbf{Section} & \textbf{Contributor(s)} & \textbf{Description}\\
+        \hline
+        \textbf{Introduction} & Andrew Hum & Completed section and revision\\
+        \hline
+        \multirow{4}{2.5cm}{\textbf{State Charts}}  & Arkin Modi,           & Arkin: Projects, Friends \& Chat\\
+        ~                                           & Christopher Vishnu,   & Chris: User Attributes, General (Room)\\
+        ~                                           & Hongzhao Tan,         & Hongzhao: SE Attributes, Time-Step\\
+        ~                                           & Shengchen Zhou        & Shengchen: Shop, SE Inventory\\
+        \hline
+        \multirow{5}{2.5cm}{\textbf{Sequence Diagrams}} & Andrew Hum,           & Andrew: Figure 11 \& 13\\
+        ~                                               & Arkin Modi,           & Arkin: Figure 10 \& 15\\
+        ~                                               & Christopher Vishnu,   & Chris: Figure 14\\
+        ~                                               & Hongzhao Tan,         & Hongzhao: Figure 12\\
+        ~                                               & Shengchen Zhao        & Shengchen: Figure 9\\
+        \hline
+        \textbf{Detailed Class Diagram} & Andrew Hum & Completed section and revision\\
+        \hline
+    \end{tabular}
+\end{table}
+
+\vspace{2cm}
+
+\begin{table}[H]
+    \begin{tabular}{p{5cm}}
+    \\
+    \hline
+    Andrew Hum
+    \\\\\\\\
+    \hline
+    Arkin Modi
+    \\\\\\\\
+    \hline
+    Hongzhao Tan
+    \\\\\\\\
+    \hline
+    Christopher Vishnu
+    \\\\\\\\
+    \hline
+    Shengchen Zhou
+    \end{tabular}
+\end{table}
+
+\end{document}
+%------------------------------------------------------------------------------
